@@ -1,17 +1,18 @@
 import { createStore } from 'redux';
+import { ADD_DRINK, addDrink, REMOVE_DRINK, removeDrink } from './actions/lunchActions';
 
 const initialState = {
-  drinks: 0,
+  drinks: [],
   chips: 0,
   sandwiches: 0
 };
 
 function reducer(state = initialState, action) {
   switch(action.type) {
-    case 'ADD_DRINK':
-      return { ...state, drinks: state.drinks + 1 };
-    case 'REMOVE_DRINK': 
-      return { ...state, drinks: state.drinks - 1 };
+    case ADD_DRINK:
+      return { ...state, drinks: [...state.drinks, action.payload] };
+    case REMOVE_DRINK: 
+      return { ...state, drinks: state.drinks.filter(d => d !== action.payload) };
     case 'ADD_CHIPS':
       return { ...state, chips: state.chips + 1 };
     case 'REMOVE_CHIPS': 
@@ -31,13 +32,10 @@ const unsubscribe = store.subscribe(() => {
   console.log(store.getState());
 });
 
-store.dispatch({
-  type: 'ADD_DRINK'
-});
+store.dispatch(addDrink('water'));
+store.dispatch(addDrink('coffee'));
 
-store.dispatch({
-  type: 'REMOVE_DRINK'
-});
+store.dispatch(removeDrink('water'));
 
 store.dispatch({
   type: 'ADD_CHIPS'
